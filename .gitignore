@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+local.config.js
+source_images/*
+!source_images/.gitkeep
+output/*
+!output/.gitkeep

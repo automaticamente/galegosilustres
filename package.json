@@ -1,0 +1,39 @@
+{
+  "name": "galegosilustres",
+  "description": "Twitter bot.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/bertez/galegosilustres",
+  "author": {
+    "name": "Berto Yáñez",
+    "email": "bertez@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bertez/galegosilustres.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bertez/galegosilustres/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/bertez/galegosilustres/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "dependencies": {
+    "canvas": "^1.1.6",
+    "node-twitter": "^0.5.2",
+    "request": "~2.44.0",
+    "underscore": "~1.5.1",
+    "underscore.deferred": "~0.4.0"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "grunt-notify": "~0.2.18"
+  },
+  "keywords": []
+}
