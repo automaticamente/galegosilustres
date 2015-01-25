@@ -154,7 +154,7 @@ setInterval(function () {
     console.log(e);
   }
 // }, 1000 * 60 * 60);
-}, 1000 * 60 * 5);
+}, 1000 * 60 * 10);
 
 // Tweet once on initialization
 tweet();
