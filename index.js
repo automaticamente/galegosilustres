@@ -115,8 +115,6 @@ function tweet() {
 
         var status = myTweet.quote + ' ' + myTweet.signature;
 
-        console.log(status.length);
-
         if(DEBUG) {
             console.log({
                 status: status,
