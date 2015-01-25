@@ -9,12 +9,14 @@ module.exports = {
     lyricsAPI: '',
     image_folder: 'source_images/',
     output_folder: 'output/',
-    imageWidth: 440,
+    imageWidth: 500,
     textBackground: 'white',
     textStrokeColor: 'black',
     textStrokeWidth: 4,
-    font: '20px Sans Serif',
-    lineHeight: 22,
-    maxQuoteLength: 100,
+    font: 'bold 24px Sans Serif',
+    fontSignature: '16px Sans Serif',
+    imageAlpha: 0.5,
+    lineHeight: 28,
+    maxQuoteLength: 85,
     content: require('./content')
 };

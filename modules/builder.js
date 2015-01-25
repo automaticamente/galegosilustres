@@ -61,6 +61,8 @@ var makePNG = function (config, globalConfig) {
             }
         }
         drawStrokedText(context, line, x, y);
+        context.font = globalConfig.fontSignature;
+
         drawStrokedText(context, signature, x, y + lineHeight + (globalConfig.lineHeight / 2));
     };
 
@@ -82,10 +84,13 @@ var makePNG = function (config, globalConfig) {
         var canvas = new Canvas(resized.width, resized.height),
             ctx = canvas.getContext('2d');
 
+        ctx.globalAlpha = config.imageAlpha;
+
         ctx.drawImage(img, 0, 0, resized.width, resized.height);
+        ctx.globalAlpha = 1.0;
 
         ctx.font = globalConfig.font;
-        wrapText(ctx, config.quote, config.signature, 20, resized.height - 120, resized.width - 20, globalConfig.lineHeight);
+        wrapText(ctx, config.quote, config.signature, 20, resized.height - 180, resized.width - 20, globalConfig.lineHeight);
 
         writePng(canvas);
     });

@@ -11,6 +11,8 @@ var builder = require('./modules/builder');
 var path = require('path');
 var fs = require('fs');
 
+var DEBUG = false;
+
 /**
 * Configuration
 */
@@ -29,6 +31,17 @@ try {
 
 function getQuote() {
     var defer = new _.Deferred();
+    var person = helpers.choice(config.content.persons);
+
+    if(DEBUG) {
+        defer.resolve({
+            quote: '"' + helpers.choice(config.content.debugContent) + '"',
+            image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
+            signature: person.signature
+        });
+
+        return defer.promise();
+    }
 
     var lyricsURL = 'http://api.lyricsnmusic.com/songs?api_key=',
         artistParameter = '&artist=' + helpers.choice(config.content.artists),
@@ -58,8 +71,6 @@ function getQuote() {
                 }
             });
 
-            var person = helpers.choice(config.content.persons);
-
             defer.resolve({
                 quote: '"' + finalQuote + '"',
                 image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
@@ -85,7 +96,11 @@ function generate() {
         builder(result, config).done(function(output) {
             result.output = output;
             defer.resolve(result);
+        }).fail(function(err) {
+            console.log('Image generation error', err);
         });
+    }).fail(function(err){
+        console.log('Lyric API error', err);
     });
 
     return defer.promise();
@@ -99,6 +114,18 @@ function tweet() {
     generate().then(function(myTweet) {
 
         var status = myTweet.quote + ' ' + myTweet.signature;
+
+        console.log(status.length);
+
+        if(DEBUG) {
+            console.log({
+                status: status,
+                statusLength: status.length,
+                output: myTweet.output
+            });
+
+            return;
+        }
 
         var params = {
             url: 'https://api.twitter.com/1.1/statuses/update_with_media.json',
@@ -121,14 +148,15 @@ function tweet() {
 }
 
 // Tweet every 60 minutes
-// setInterval(function () {
-//   try {
-//     tweet();
-//   }
-//   catch (e) {
-//     console.log(e);
-//   }
+setInterval(function () {
+  try {
+    tweet();
+  }
+  catch (e) {
+    console.log(e);
+  }
 // }, 1000 * 60 * 60);
+}, 1000 * 60 * 5);
 
 // Tweet once on initialization
 tweet();
