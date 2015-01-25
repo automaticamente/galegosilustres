@@ -6,6 +6,8 @@ var fs = require('fs');
 var path = require('path');
 var uuid = require('node-uuid');
 
+var exec = require('child_process').exec;
+
 var Canvas = require('canvas'),
     Image = Canvas.Image;
 
@@ -14,20 +16,22 @@ var Canvas = require('canvas'),
 * @param {Object} object - Configuration object
 */
 var makePNG = function (config, globalConfig) {
-    console.log(globalConfig);
     var defer = new _.Deferred();
 
     var writePng = function(canvas) {
-        var fileName = path.join(__dirname + '../../' + globalConfig.output_folder + uuid.v1() + '.png'),
+        var fileName = path.join(__dirname + '../../' + globalConfig.output_folder + uuid.v1() + '.jpg'),
             out = fs.createWriteStream(fileName),
-            stream = canvas.pngStream();
+            stream = canvas.jpegStream();
 
         stream.on('data', function(chunk) {
             out.write(chunk);
         });
 
         stream.on('end', function() {
-            defer.resolve(fileName);
+            exec('convert ' + fileName + ' ' + fileName).on('close', function() {
+                  defer.resolve(fileName);
+            });
+
         });
     };
 

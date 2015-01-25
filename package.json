@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "canvas": "^1.1.6",
-    "node-twitter": "^0.5.2",
+    "node-twitter": "https://github.com/dariusk/node-twitter/archive/master.tar.gz",
     "node-uuid": "^1.4.2",
     "request": "~2.44.0",
     "underscore": "~1.5.1",

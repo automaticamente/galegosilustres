@@ -9,6 +9,7 @@ _.mixin( require('underscore.deferred') );
 var helpers = require('./modules/helpers');
 var builder = require('./modules/builder');
 var path = require('path');
+var fs = require('fs');
 
 /**
 * Configuration
@@ -22,17 +23,6 @@ try {
     config = require('./config.js');
 }
 
-
-/**
-* Random strings
-*/
-
-var randomStrings = [
-    '"Quiero sexo indecente, lo suficiente prendida en fuego, tu boca es aguardiente"',
-    '"Empieza a bailar el movimiento original no pares, no me dejes con las ganas"',
-    '"Algo que tú tienes me está controlando te estoy alucinando"'
-];
-
 /**
 * Get quote
 */
@@ -42,44 +32,42 @@ function getQuote() {
 
     var lyricsURL = 'http://api.lyricsnmusic.com/songs?api_key=',
         artistParameter = '&artist=' + helpers.choice(config.content.artists),
-        fullURL = lyricsURL + config.lyricsAPI + artistParameter,
-        chosenQuote;
+        fullURL = lyricsURL + config.lyricsAPI + artistParameter;
 
     request(fullURL, function(error, response, body) {
         if (!error && response.statusCode === 200) {
-            chosenQuote = helpers.choice(JSON.parse(body)).snippet;
-        } else {
-            chosenQuote = 'Isto é unha cadea de proba \n para cando non haia \n resultados da busca';
+            var chosenQuote = helpers.choice(JSON.parse(body)).snippet.replace(/\r/gm, '').split('\n');
+
+            chosenQuote.pop();
+
+            var finalQuote = '';
+
+            _.each(chosenQuote, function(part, i) {
+                if(part.length && finalQuote.length + part.length <= config.maxQuoteLength) {
+                    var initial = '';
+
+                    part = part.trim();
+
+                    if(/[A-Z]/.test(part[0])) {
+                        initial = '. ';
+                    } else if (i !== 0) {
+                        initial = ', ';
+                    }
+
+                    finalQuote += (i !== 0 ? initial : '') + part;
+                }
+            });
+
+            var person = helpers.choice(config.content.persons);
+
+            defer.resolve({
+                quote: '"' + finalQuote + '"',
+                image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
+                signature: person.signature
+            });
+
         }
 
-        var cleanedQuote = chosenQuote.replace(/\r/gm, '').split('\n');
-
-        var finalQuote = '';
-
-        _.each(cleanedQuote, function(part, i) {
-            if(part.length && finalQuote.length + part.length <= config.maxQuoteLength) {
-                var initial = '';
-
-                if(/[A-Z]/.test(part[0])) {
-                    initial = '.';
-                } else if (i !== 0) {
-                    initial = ' ';
-                }
-
-                finalQuote += initial + part.trim() + ' ';
-            }
-        });
-
-        console.log(finalQuote);
-    });
-
-
-    var person = helpers.choice(config.content.persons);
-
-    defer.resolve({
-        quote: helpers.choice(randomStrings),
-        image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
-  signature: person.signature
     });
 
     return defer.promise();
@@ -94,9 +82,10 @@ function generate() {
     var defer = new _.Deferred();
 
     getQuote().done(function(result) {
-        // builder(result, config).done(function(output) {
-        //   defer.resolve(output);
-        // });
+        builder(result, config).done(function(output) {
+            result.output = output;
+            defer.resolve(result);
+        });
     });
 
     return defer.promise();
@@ -108,7 +97,25 @@ function generate() {
 
 function tweet() {
     generate().then(function(myTweet) {
-      console.log(myTweet);
+
+        var status = myTweet.quote + ' ' + myTweet.signature;
+
+        var params = {
+            url: 'https://api.twitter.com/1.1/statuses/update_with_media.json',
+            oauth: config.oauth
+        };
+
+        var r = request.post(params, function(err, response, body) {
+            if(err) {
+                throw err;
+            }
+
+            console.log(body);
+        });
+
+        var form = r.form();
+        form.append('status', status);
+        form.append('media[]', fs.createReadStream(myTweet.output));
 
     });
 }
