@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       app: {
-        src: ['js/*.js', '*.js']
+        src: ['modules/*.js', '*.js']
       }
     },
     watch: {
