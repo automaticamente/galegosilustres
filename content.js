@@ -37,7 +37,7 @@ var availablePersons = [
     },
     {
         signature: 'Concepción Arenal (1820-1893)',
-        images: ['arenal1.jpg']
+        images: ['concepcion1.jpg']
     }
 ];
 
