@@ -153,8 +153,7 @@ setInterval(function () {
   catch (e) {
     console.log(e);
   }
-// }, 1000 * 60 * 60);
-}, 1000 * 60 * 10);
+ }, 1000 * 60 * 60);
 
 // Tweet once on initialization
 tweet();
