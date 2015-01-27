@@ -54,14 +54,9 @@ var reggaetonArtists = [
     'tito el bambino'
 ];
 
-var randomQuotes = [
-    'Si te pido un beso Que me saque de control Algo fuera de lo natural Cuando me haces es el amor',
-    'Cuando estoy contigo Me siento tan especial Algo fuera de lo natural Contigo me quisiera quedar',
-    'Me encanta cuando me besas la boca Ninguna como tu cuando me toca'
-];
 
 module.exports = {
     persons: availablePersons,
     artists: reggaetonArtists,
-    debugContent: randomQuotes
+    debugContent: require('./debug.json')
 };

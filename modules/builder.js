@@ -68,7 +68,7 @@ var makePNG = function (config, globalConfig) {
 
     fs.readFile(config.image, function(err, imageFile) {
         if(err) {
-            throw err;
+            defer.reject('Error reading file');
         }
 
         var img = new Image();

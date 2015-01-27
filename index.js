@@ -11,7 +11,7 @@ var builder = require('./modules/builder');
 var path = require('path');
 var fs = require('fs');
 
-var DEBUG = false;
+var DEBUG = true;
 
 /**
 * Configuration
@@ -33,53 +33,51 @@ function getQuote() {
     var defer = new _.Deferred();
     var person = helpers.choice(config.content.persons);
 
-    if(DEBUG) {
-        defer.resolve({
-            quote: '"' + helpers.choice(config.content.debugContent) + '"',
-            image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
-            signature: person.signature
-        });
-
-        return defer.promise();
-    }
-
     var lyricsURL = 'http://api.lyricsnmusic.com/songs?per_page=100&api_key=',
         artistParameter = '&artist=' + helpers.choice(config.content.artists),
         fullURL = lyricsURL + config.lyricsAPI + artistParameter;
 
-    request(fullURL, function(error, response, body) {
-        if (!error && response.statusCode === 200) {
-            var chosenQuote = helpers.choice(JSON.parse(body)).snippet.replace(/\r/gm, '').split('\n');
+    var parseResponse = function(body) {
+        var chosenQuote = helpers.choice(body).snippet.replace(/\r/gm, '').split('\n');
 
-            chosenQuote.pop();
+        chosenQuote.pop();
 
-            var finalQuote = '';
+        var finalQuote = '';
 
-            _.each(chosenQuote, function(part, i) {
-                if(part.length && finalQuote.length + part.length <= config.maxQuoteLength) {
-                    var initial = '';
+        _.each(chosenQuote, function(part, i) {
+            if(part.length && finalQuote.length + part.length <= config.maxQuoteLength) {
+                var initial = '';
 
-                    part = part.trim();
+                part = part.trim();
 
-                    if(/[A-Z]/.test(part[0])) {
-                        initial = '. ';
-                    } else if (i !== 0) {
-                        initial = ', ';
-                    }
-
-                    finalQuote += (i !== 0 ? initial : '') + part;
+                if(/[A-Z]/.test(part[0])) {
+                    initial = '. ';
+                } else if (i !== 0) {
+                    initial = ', ';
                 }
-            });
 
-            defer.resolve({
-                quote: '"' + finalQuote + '"',
-                image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
-                signature: person.signature
-            });
+                finalQuote += (i !== 0 ? initial : '') + part;
+            }
+        });
 
-        }
+        defer.resolve({
+            quote: '"' + finalQuote + '"',
+            image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
+            signature: person.signature
+        });
+    };
 
-    });
+    if(DEBUG) {
+        parseResponse(config.content.debugContent);
+    } else {
+        request(fullURL, function(error, response, body) {
+            if (!error && response.statusCode === 200) {
+                parseResponse(JSON.parse(body));
+            } else {
+                defer.reject(error);
+            }
+        });
+    }
 
     return defer.promise();
 }
