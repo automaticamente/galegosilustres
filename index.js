@@ -115,6 +115,7 @@ function tweet() {
 
         if(DEBUG) {
             console.log({
+                debug: true,
                 status: status,
                 statusLength: status.length,
                 output: myTweet.output
@@ -144,14 +145,16 @@ function tweet() {
 }
 
 // Tweet every 60 minutes
-setInterval(function () {
-  try {
-    tweet();
-  }
-  catch (e) {
-    console.log(e);
-  }
- }, 1000 * 60 * 60);
+if(!DEBUG) {
+    setInterval(function () {
+      try {
+        tweet();
+      }
+      catch (e) {
+        console.log(e);
+      }
+     }, config.tweetInterval);
+}
 
 // Tweet once on initialization
 tweet();
