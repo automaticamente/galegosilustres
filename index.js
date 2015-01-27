@@ -43,7 +43,7 @@ function getQuote() {
         return defer.promise();
     }
 
-    var lyricsURL = 'http://api.lyricsnmusic.com/songs?api_key=',
+    var lyricsURL = 'http://api.lyricsnmusic.com/songs?per_page=100&api_key=',
         artistParameter = '&artist=' + helpers.choice(config.content.artists),
         fullURL = lyricsURL + config.lyricsAPI + artistParameter;
 
