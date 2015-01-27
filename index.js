@@ -61,7 +61,7 @@ function getQuote() {
         });
 
         defer.resolve({
-            quote: '"' + finalQuote + '"',
+            quote: finalQuote,
             image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
             signature: person.signature
         });
