@@ -1,6 +1,6 @@
 {
   "name": "galegosilustres",
-  "description": "This is a twitter bot that puts random reggaeton lyrics over photos of historical figures from Galicia",
+  "description": "This is a twitter bot that overlays random reggaeton lyrics on random pictures of historical figures from Galicia",
   "version": "0.1.0",
   "homepage": "https://github.com/bertez/galegosilustres",
   "author": {

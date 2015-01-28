@@ -40,14 +40,12 @@ function getQuote() {
     var parseResponse = function(body) {
         var chosenQuote = helpers.choice(body).snippet.split('\n');
 
-
         var finalQuote = _.chain(chosenQuote)
             .pop()
             .map(function(part) {
-                return part.trim().replace(/^[\.,]+|[\.,]+$|\(.*\)|\[.*\]/g, '');
-            })
-            .map(function(part) {
-                return part.trim().replace(/\s+([.,!":])/g, '$1');
+                return part.replace(/^[\.,]+|[\.,]+$|\(.*\)|\[.*\]|\s+[\.,]\s+/g, '')
+                    .replace(/\s+([.,!":])/g, '$1')
+                    .trim();
             })
             .filter(function(part) {
                 return part !== '';
@@ -55,7 +53,7 @@ function getQuote() {
             .value()
             .join('. ');
 
-        defer.resolve({
+        return defer.resolve({
             quote: finalQuote,
             image: path.join(config.imagesFolder, helpers.choice(person.images)),
             signature: person.signature,
@@ -89,7 +87,7 @@ function generate() {
     getQuote().done(function(result) {
         builder(result, config).done(function(output) {
             result.output = output;
-            defer.resolve(result);
+            return defer.resolve(result);
         }).fail(function(err) {
             console.log('Image generation error: ', err);
         });
@@ -116,6 +114,7 @@ function tweet() {
         if(DEBUG) {
             console.log({
                 debug: true,
+                originalStatus: myTweet.quote,
                 status: status,
                 statusLength: status.length,
                 output: myTweet.output

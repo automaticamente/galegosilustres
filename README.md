@@ -1,6 +1,6 @@
 # @galegosilustres (Galegos Ilustres)
 
-This is a twitter bot that overlays random reggaeton lyrics over random pictures of historical figures from [Galicia](http://en.wikipedia.org/wiki/Galicia_%28Spain%29).
+This is a twitter bot that overlays random reggaeton lyrics on random pictures of historical figures from [Galicia](http://en.wikipedia.org/wiki/Galicia_%28Spain%29).
 
 ## Install
 
