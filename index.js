@@ -1,15 +1,15 @@
 /**
 * Deps
 */
+var path = require('path');
+var fs = require('fs');
 var request = require('request');
 var _ = require('underscore');
-
-_.mixin( require('underscore.deferred') );
+_.mixin(require('underscore.deferred'));
+var S = require('string');
 
 var helpers = require('./modules/helpers');
 var builder = require('./modules/builder');
-var path = require('path');
-var fs = require('fs');
 
 var DEBUG = true;
 
@@ -32,38 +32,36 @@ try {
 function getQuote() {
     var defer = new _.Deferred();
     var person = helpers.choice(config.content.persons);
+    var font = helpers.choice(config.availableFonts);
 
     var lyricsURL = 'http://api.lyricsnmusic.com/songs?per_page=100&api_key=',
         artistParameter = '&artist=' + helpers.choice(config.content.artists),
         fullURL = lyricsURL + config.lyricsAPI + artistParameter;
 
     var parseResponse = function(body) {
-        var chosenQuote = helpers.choice(body).snippet.replace(/\r/gm, '').split('\n');
+        var chosenQuote = helpers.choice(body).snippet.split('\n');
 
-        chosenQuote.pop();
 
-        var finalQuote = '';
+        var finalQuote = _.chain(chosenQuote)
+            .pop()
+            .map(function(part) {
+                return part.trim().replace(/^[\.,]+|[\.,]+$|\(.*\)|\[.*\]/g, '');
+            })
+            .map(function(part) {
+                return part.trim().replace(/\s+([.,!":])/g, '$1');
+            })
+            .filter(function(part) {
+                return part !== '';
+            })
+            .value()
+            .join('. ');
 
-        _.each(chosenQuote, function(part, i) {
-            if(part.length && finalQuote.length + part.length <= config.maxQuoteLength) {
-                var initial = '';
-
-                part = part.trim();
-
-                if(/[A-Z]/.test(part[0])) {
-                    initial = '. ';
-                } else if (i !== 0) {
-                    initial = ', ';
-                }
-
-                finalQuote += (i !== 0 ? initial : '') + part;
-            }
-        });
 
         defer.resolve({
             quote: finalQuote,
-            image: path.join(__dirname, config.image_folder + helpers.choice(person.images)),
-            signature: person.signature
+            image: path.join(config.imagesFolder, helpers.choice(person.images)),
+            signature: person.signature,
+            font: font
         });
     };
 

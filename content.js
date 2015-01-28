@@ -54,7 +54,6 @@ var reggaetonArtists = [
     'tito el bambino'
 ];
 
-
 module.exports = {
     persons: availablePersons,
     artists: reggaetonArtists,

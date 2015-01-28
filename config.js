@@ -1,4 +1,7 @@
 // Put your own Twitter App keys here. See README.md for more detail.
+
+var path = require('path');
+
 module.exports = {
     tweetInterval: 1000 * 60 * 60,
     oauth: {
@@ -8,14 +11,16 @@ module.exports = {
         token_secret:  ''
     },
     lyricsAPI: '',
-    image_folder: 'source_images/',
-    output_folder: 'output/',
+    imagesFolder: path.join(__dirname, 'source_images/'),
+    fontFolder: path.join(__dirname, 'fonts'),
+    outputFolder: path.join(__dirname, 'output/'),
     imageWidth: 500,
     textBackground: 'white',
     textStrokeColor: 'black',
     textStrokeWidth: 4,
-    font: 'bold 24px Sans Serif',
-    fontSignature: '16px Sans Serif',
+    availableFonts: ['Trocchi-Regular', 'RobotoSlab-Bold', 'ArbutusSlab-Regular'],
+    font: '24px',
+    fontSignature: '18px',
     imageAlpha: 0.5,
     lineHeight: 28,
     maxQuoteLength: 85,

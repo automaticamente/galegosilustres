@@ -1,25 +1,27 @@
-var _ = require('underscore');
-
-_.mixin( require('underscore.deferred') );
-
+/**
+* Deps
+*/
 var fs = require('fs');
 var path = require('path');
 var uuid = require('node-uuid');
-
 var exec = require('child_process').exec;
+var _ = require('underscore');
+_.mixin(require('underscore.deferred'));
 
 var Canvas = require('canvas'),
-    Image = Canvas.Image;
+    Image = Canvas.Image,
+    Font = Canvas.Font;
 
 /**
 * Returns a png image path
-* @param {Object} object - Configuration object
+* @param {Object} config - PNG Configuration object
+* @param {Object} globalConfig - App Configuration object
 */
 var makePNG = function (config, globalConfig) {
     var defer = new _.Deferred();
 
     var writePng = function(canvas) {
-        var fileName = path.join(__dirname + '../../' + globalConfig.output_folder + uuid.v1() + '.jpg'),
+        var fileName = path.join(globalConfig.outputFolder, uuid.v1() + '.jpg'),
             out = fs.createWriteStream(fileName),
             stream = canvas.jpegStream();
 
@@ -29,7 +31,7 @@ var makePNG = function (config, globalConfig) {
 
         stream.on('end', function() {
             exec('convert ' + fileName + ' ' + fileName).on('close', function() {
-                  defer.resolve(fileName);
+                  return defer.resolve(fileName);
             });
 
         });
@@ -43,7 +45,7 @@ var makePNG = function (config, globalConfig) {
         context.fillText(text, x, y);
     };
 
-    var wrapText = function (context, text, signature, x, y, maxWidth, lineHeight) {
+    var wrapText = function (context, text, signature, x, y, maxWidth, lineHeight, font) {
         var words = text.split(' ');
         var line = '';
 
@@ -61,18 +63,21 @@ var makePNG = function (config, globalConfig) {
             }
         }
         drawStrokedText(context, line, x, y);
-        context.font = globalConfig.fontSignature;
 
+        console.log(globalConfig.fontSignature + ' ' + font);
+
+        context.font = globalConfig.fontSignature + ' ' + font;
         drawStrokedText(context, signature, x, y + lineHeight + (globalConfig.lineHeight / 2));
     };
 
     fs.readFile(config.image, function(err, imageFile) {
         if(err) {
-            defer.reject('Error reading file');
+            return defer.reject('Error reading file');
         }
 
         var img = new Image();
         img.src = imageFile;
+
 
         var ratio = img.height / img.width;
 
@@ -84,13 +89,18 @@ var makePNG = function (config, globalConfig) {
         var canvas = new Canvas(resized.width, resized.height),
             ctx = canvas.getContext('2d');
 
-        ctx.globalAlpha = config.imageAlpha;
+        ctx.globalAlpha = globalConfig.imageAlpha;
 
         ctx.drawImage(img, 0, 0, resized.width, resized.height);
         ctx.globalAlpha = 1.0;
 
-        ctx.font = globalConfig.font;
-        wrapText(ctx, config.quote, config.signature, 20, resized.height - 180, resized.width - 20, globalConfig.lineHeight);
+        var quoteFont = new Font(config.font, path.join(globalConfig.fontFolder, config.font + '.ttf'));
+
+        ctx.addFont(quoteFont);
+
+        ctx.font = globalConfig.font + ' ' + config.font;
+
+        wrapText(ctx, '"' + config.quote + '"', config.signature, 20, resized.height / 2 + 100, resized.width - 20, globalConfig.lineHeight, config.font);
 
         writePng(canvas);
     });
