@@ -43,7 +43,8 @@ function getQuote() {
         var finalQuote = _.chain(chosenQuote)
             .pop()
             .map(function(part) {
-                return part.replace(/^[\.,]+|[\.,]+$|\(.*\)|\[.*\]|\s+[\.,]\s+/g, '')
+                return part.trim()
+                    .replace(/^[\.,]+|[\.,]+$|\(.*\)|\[.*\]|\s+[\.,]\s+/g, '')
                     .replace(/\s+([.,!":])/g, '$1')
                     .trim();
             })
