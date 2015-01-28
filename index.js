@@ -6,12 +6,11 @@ var fs = require('fs');
 var request = require('request');
 var _ = require('underscore');
 _.mixin(require('underscore.deferred'));
-var S = require('string');
 
 var helpers = require('./modules/helpers');
 var builder = require('./modules/builder');
 
-var DEBUG = true;
+var DEBUG = false;
 
 /**
 * Configuration
@@ -56,7 +55,6 @@ function getQuote() {
             .value()
             .join('. ');
 
-
         defer.resolve({
             quote: finalQuote,
             image: path.join(config.imagesFolder, helpers.choice(person.images)),
@@ -93,10 +91,10 @@ function generate() {
             result.output = output;
             defer.resolve(result);
         }).fail(function(err) {
-            console.log('Image generation error', err);
+            console.log('Image generation error: ', err);
         });
     }).fail(function(err){
-        console.log('Lyric API error', err);
+        console.log('Lyric API error: ', err);
     });
 
     return defer.promise();
@@ -109,7 +107,11 @@ function generate() {
 function tweet() {
     generate().then(function(myTweet) {
 
-        var status = myTweet.quote + ' ' + myTweet.signature;
+        var maxLength = 117;
+
+        var cutStatus = '"' + myTweet.quote.substring(0, maxLength - (myTweet.signature.length + 6)) + '..." ';
+
+        var status = cutStatus + myTweet.signature;
 
         if(DEBUG) {
             console.log({

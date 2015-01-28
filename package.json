@@ -27,7 +27,6 @@
     "canvas": "^1.1.6",
     "node-uuid": "^1.4.2",
     "request": "~2.44.0",
-    "string": "^3.0.0",
     "underscore": "~1.5.1",
     "underscore.deferred": "~0.4.0"
   },

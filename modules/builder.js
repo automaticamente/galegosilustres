@@ -64,8 +64,6 @@ var makePNG = function (config, globalConfig) {
         }
         drawStrokedText(context, line, x, y);
 
-        console.log(globalConfig.fontSignature + ' ' + font);
-
         context.font = globalConfig.fontSignature + ' ' + font;
         drawStrokedText(context, signature, x, y + lineHeight + (globalConfig.lineHeight / 2));
     };
@@ -100,7 +98,7 @@ var makePNG = function (config, globalConfig) {
 
         ctx.font = globalConfig.font + ' ' + config.font;
 
-        wrapText(ctx, '"' + config.quote + '"', config.signature, 20, resized.height / 2 + 100, resized.width - 20, globalConfig.lineHeight, config.font);
+        wrapText(ctx, '"' + config.quote + '"', config.signature, 20, resized.height / 2, resized.width - 20, globalConfig.lineHeight, config.font);
 
         writePng(canvas);
     });
