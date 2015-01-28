@@ -70,7 +70,7 @@ function getQuote() {
             if (!error && response.statusCode === 200) {
                 parseResponse(JSON.parse(body));
             } else {
-                defer.reject(error);
+                defer.reject(error ? error : 'Timeout. Try again.');
             }
         });
     }
