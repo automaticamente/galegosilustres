@@ -10,19 +10,13 @@ _.mixin(require('underscore.deferred'));
 var helpers = require('./modules/helpers');
 var builder = require('./modules/builder');
 
-var DEBUG = false;
+var DEBUG = true;
 
 /**
 * Configuration
 */
 
-var config;
-
-try {
-    config = require('./local.config.js');
-} catch(e) {
-    config = require('./config.js');
-}
+var config = fs.existsSync('./local.config.js') ? require('./local.config.js') : require('./config.js');
 
 /**
 * Get quote
