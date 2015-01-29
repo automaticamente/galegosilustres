@@ -10,7 +10,7 @@ _.mixin(require('underscore.deferred'));
 var helpers = require('./modules/helpers');
 var builder = require('./modules/builder');
 
-var DEBUG = true;
+var DEBUG = false;
 
 /**
 * Configuration
