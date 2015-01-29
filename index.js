@@ -40,7 +40,10 @@ function getQuote() {
                 return part.trim()
                     .replace(/^[\.,]+|[\.,]+$|\(.*\)|\[.*\]|\s+[\.,]\s+/g, '')
                     .replace(/\s+([.,!":])/g, '$1')
-                    .trim();
+                    .trim()
+                    .replace(/^[a-z]/, function(letter) {
+                        return letter.toUpperCase();
+                    });
             })
             .filter(function(part) {
                 return part !== '';
