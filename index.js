@@ -51,7 +51,7 @@ function getQuote() {
             .value()
             .join('. ');
 
-        return defer.resolve({
+        defer.resolve({
             quote: finalQuote,
             image: path.join(config.imagesFolder, helpers.choice(person.images)),
             signature: person.signature,
@@ -85,7 +85,7 @@ function generate() {
     getQuote().done(function(result) {
         builder(result, config).done(function(output) {
             result.output = output;
-            return defer.resolve(result);
+            defer.resolve(result);
         }).fail(function(err) {
             console.log('Image generation error: ', err);
         });

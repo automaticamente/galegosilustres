@@ -31,7 +31,7 @@ var makePNG = function (config, globalConfig) {
 
         stream.on('end', function() {
             exec('convert ' + fileName + ' ' + fileName).on('close', function() {
-                  return defer.resolve(fileName);
+                  defer.resolve(fileName);
             });
 
         });
@@ -70,7 +70,7 @@ var makePNG = function (config, globalConfig) {
 
     fs.readFile(config.image, function(err, imageFile) {
         if(err) {
-            return defer.reject('Error reading file');
+            defer.reject('Error reading file');
         }
 
         var img = new Image();
