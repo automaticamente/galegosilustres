@@ -103,9 +103,9 @@ function generate() {
 function tweet() {
     generate().then(function(myTweet) {
 
-        var maxLength = 117;
+        var maxLength = 117 - (myTweet.signature.length + 6);
 
-        var cutStatus = '"' + myTweet.quote.substring(0, maxLength - (myTweet.signature.length + 6)) + '..." ';
+        var cutStatus = '"' + (myTweet.quote.length <= maxLength ? myTweet.quote + '" ' : myTweet.quote.substring(0, myTweet.quote.lastIndexOf(' ', maxLength)) + '..." ');
 
         var status = cutStatus + myTweet.signature;
 
