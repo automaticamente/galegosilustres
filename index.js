@@ -103,11 +103,13 @@ function generate() {
 function tweet() {
     generate().then(function(myTweet) {
 
-        var maxLength = 117 - (myTweet.signature.length + 6);
+        var optionalHashtag = config.extraHashtags || '';
+
+        var maxLength = 117 - (myTweet.signature.length + optionalHashtag.length + 7);
 
         var cutStatus = '"' + (myTweet.quote.length <= maxLength ? myTweet.quote + '" ' : myTweet.quote.substring(0, myTweet.quote.lastIndexOf(' ', maxLength)) + '..." ');
 
-        var status = cutStatus + myTweet.signature;
+        var status = cutStatus  + myTweet.signature + (optionalHashtag ? ' ' + optionalHashtag : '') ;
 
         if(DEBUG) {
             console.log({

@@ -24,5 +24,6 @@ module.exports = {
     imageAlpha: 0.5,
     lineHeight: 28,
     maxQuoteLength: 85,
-    content: require('./content')
+    content: require('./content'),
+    extraHashtags: ''
 };

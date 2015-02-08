@@ -29,7 +29,7 @@ var availablePersons = [
     },
     {
         signature: 'Eduardo Blanco Amor (1897-1979)',
-        images: ['blanco1.jpg', 'blanco2.jpg']
+        images: ['blanco1.jpg', 'blanco2.jpg', 'blanco3.jpg']
     },
     {
         signature: 'Ramón Otero Pedrayo (1897-1979)',
@@ -42,7 +42,35 @@ var availablePersons = [
     {
         signature: 'Concepción Arenal (1820-1893)',
         images: ['concepcion1.jpg']
-    }
+    },
+    {
+        signature: 'Eduardo Pondal (1835-1917)',
+        images: ['pondal1.jpg', 'pondal2.jpg']
+    },
+    {
+        signature: 'María Mariño (1907-1967)',
+        images: ['marino1.jpg', 'marino2.jpg']
+    },
+    {
+        signature: 'Ramón Piñeiro (1915-1990)',
+        images: ['ramonp1.jpg', 'ramonp2.jpg']
+    },
+    {
+        signature: 'Curros Enríquez (1851-1908)',
+        images: ['curros1.jpg', 'curros2.jpg']
+    },
+    {
+        signature: 'Vicente Risco (1884-1963)',
+        images: ['risco1.jpg', 'risco2.jpg']
+    },
+    {
+        signature: 'Celso Emilio Ferreirro (1912-1979)',
+        images: ['celso1.jpg', 'celso2.jpg']
+    },
+    {
+        signature: 'Rafael Dieste (1899-1981)',
+        images: ['dieste1.jpg', 'dieste2.jpg']
+    },
 ];
 
 var reggaetonArtists = [
@@ -51,7 +79,10 @@ var reggaetonArtists = [
     'cosculluela',
     'arcangel',
     'tego calderon',
-    'tito el bambino'
+    'tito el bambino',
+    'calle 13',
+    'alexis fido',
+    'wisin yandel'
 ];
 
 module.exports = {
