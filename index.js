@@ -143,7 +143,7 @@ function tweet() {
     });
 }
 
-// Tweet every 60 minutes
+// Tweet interval
 if(!DEBUG) {
     setInterval(function () {
       try {

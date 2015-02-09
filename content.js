@@ -82,7 +82,7 @@ var reggaetonArtists = [
     'tito el bambino',
     'calle 13',
     'alexis fido',
-    'wisin yandel'
+    'wisin'
 ];
 
 module.exports = {
