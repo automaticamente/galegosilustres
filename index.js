@@ -144,7 +144,7 @@ function tweet() {
 }
 
 // Tweet interval
-if(!DEBUG) {
+if(!DEBUG && false) {
     setInterval(function () {
       try {
         tweet();
