@@ -24,11 +24,11 @@
     "node": ">= 0.10.0"
   },
   "dependencies": {
-    "canvas": "^1.1.6",
-    "node-uuid": "^1.4.2",
-    "request": "~2.44.0",
-    "underscore": "~1.5.1",
-    "underscore.deferred": "~0.4.0"
+    "canvas": "latest",
+    "node-uuid": "latest",
+    "request": "latest",
+    "underscore": "latest",
+    "underscore.deferred": "latest"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
