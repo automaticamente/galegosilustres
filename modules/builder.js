@@ -92,9 +92,9 @@ var makePNG = function (config, globalConfig) {
         ctx.drawImage(img, 0, 0, resized.width, resized.height);
         ctx.globalAlpha = 1.0;
 
-        var quoteFont = new Font(config.font, path.join(globalConfig.fontFolder, config.font + '.ttf'));
+	console.log(path.join(globalConfig.fontFolder, config.font + '.ttf'));
 
-        ctx.addFont(quoteFont);
+        var quoteFont = new Font(config.font, path.join(globalConfig.fontFolder, config.font + '.ttf'));
 
         ctx.font = globalConfig.font + ' ' + config.font;
 
