@@ -3,3 +3,4 @@ node_modules/
 local.config.js
 output/*
 !output/.gitkeep
+activity.log
